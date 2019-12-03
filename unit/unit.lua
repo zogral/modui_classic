@@ -475,5 +475,12 @@
         end 
     end)
 
+    hooksecurefunc("TextStatusBar_UpdateTextStringWithValues", function()
+        PlayerFrameHealthBar.TextString:SetText(AbbreviateLargeNumbers(UnitHealth("player")))
+        PlayerFrameManaBar.TextString:SetText(AbbreviateLargeNumbers(UnitPower("player")))
+    
+        TargetFrameHealthBar.TextString:SetText(AbbreviateLargeNumbers(UnitHealth("target")))
+        TargetFrameManaBar.TextString:SetText(AbbreviateLargeNumbers(UnitPower("target")))
+    end)
 
     --
