@@ -4,10 +4,12 @@
 
     local f = CreateFrame'Frame'
     local build = tonumber(string.sub(GetBuildInfo() , 1, 2))
+    local UpdateSkins = nil
 
     ns.colour   = {MODUI_VAR['theme'].r, MODUI_VAR['theme'].g, MODUI_VAR['theme'].b}
     ns.colour_bu = {MODUI_VAR['theme_bu'].r, MODUI_VAR['theme_bu'].g, MODUI_VAR['theme_bu'].b}
 
+    ns.addon_skins = {}
     ns.skin     = {
         MinimapBorder,
         MiniMapTrackingBorder,
@@ -198,6 +200,12 @@
         tinsert(ns.skin, v)
     end
 
+    for i = 1, 4 do
+        for _, v in pairs({_G['CharacterFrameTab'..i]:GetRegions()}) do
+            tinsert(ns.skin, v)
+        end
+    end
+
     local _, _, a, b, c, d = QuestLogFrame:GetRegions()
     for _, v in pairs({a, b, c, d}) do
         tinsert(ns.skin, v)
@@ -266,6 +274,20 @@
     end
 
     local ADDON_LOADED = function(self, event, addon)
+        local function CheckForAddOn(name)
+            if addon == name then
+                return true
+            elseif addon == 'modui_classic' then
+                return IsAddOnLoaded(name)
+            end
+        end
+
+        for _, v in pairs(ns.addon_skins) do
+            if CheckForAddOn(v.name) then
+                v.load()
+            end
+        end
+
         if  addon == 'Blizzard_TimeManager' then
             local a = TimeManagerClockButton:GetRegions()
             tinsert(ns.skin, a)
@@ -284,9 +306,18 @@
                 local a = _G['AuctionFilterButton'..i]:GetNormalTexture()
                 tinsert(ns.skin, a)
             end
-            for _, v in pairs({BidCloseButton, BidBidButton, BidBuyoutButton}) do
-                local a = v:GetRegions()
-                tinsert(ns.skin, a)
+            local buttons = {
+                BrowseCloseButton, BrowseBidButton, BrowseBuyoutButton,
+                BidCloseButton, BidBidButton, BidBuyoutButton
+            }
+            for _, v in pairs(buttons) do
+                local _, _, _, _, _, a = v:GetRegions()
+                a:Hide()
+            end
+            for i = 1, 3 do
+                for _, v in pairs({_G['AuctionFrameTab'..i]:GetRegions()}) do
+                    tinsert(ns.skin, v)
+                end
             end
         elseif addon == 'Blizzard_CraftUI' then
             local _, a, b, c, d = CraftFrame:GetRegions()
@@ -298,26 +329,41 @@
             for _, v in pairs({a, b, c, d}) do
                 tinsert(ns.skin, v)
             end
-            local a, b, c, d = InspectHonorFrame:GetRegions()
-            for _, v in pairs({a, b, c, d}) do
-                tinsert(ns.skin, v)
+            for _, v in pairs({InspectHonorFrame:GetRegions()}) do
+                if v:GetObjectType() == 'Texture' then
+                    tinsert(ns.skin, v)
+                end
+            end
+            for i = 1, 2 do
+                for _, v in pairs({_G['InspectFrameTab'..i]:GetRegions()}) do
+                    tinsert(ns.skin, v)
+                end
             end
         elseif addon == 'Blizzard_MacroUI' then
-            local _, a, b, c, d = MacroFrame:GetRegions()
-            for _, v in pairs({a, b, c, d}) do
+            for _, v in pairs({MacroFrame:GetRegions()}) do
+                if v:GetObjectType() == 'Texture' then
+                    tinsert(ns.skin, v)
+                end
+            end
+            for _, v in pairs({MacroFrameInset:GetRegions()}) do
                 tinsert(ns.skin, v)
             end
-            local a, b, c, d = MacroPopupFrame:GetRegions()
-            for _, v in pairs({a, b, c, d}) do
+            local a, b, c, d, e, f, g, h = MacroPopupFrame.BorderBox:GetRegions()
+            for _, v in pairs({a, b, c, d, e, f, g, h}) do
                 tinsert(ns.skin, v)
             end
         elseif addon == 'Blizzard_RaidUI' then
             local _, a = ReadyCheckFrame:GetRegions()
             tinsert(ns.skin, a)
         elseif addon == 'Blizzard_TalentUI' then
-            local _, a, b, c, d = TalentFrame:GetRegions()
-            for _, v in pairs({a, b, c, d}) do
+            local _, a, b, c, d, e, f, g, h = TalentFrame:GetRegions()
+            for _, v in pairs({a, b, c, d, e, f, g, h}) do
                 tinsert(ns.skin, v)
+            end
+            for i = 1, 3 do
+                for _, v in pairs({_G['TalentFrameTab'..i]:GetRegions()}) do
+                    tinsert(ns.skin, v)
+                end
             end
         elseif addon == 'Blizzard_TradeSkillUI' then
             local _, a, b, c, d = TradeSkillFrame:GetRegions()
@@ -390,7 +436,7 @@
   tinsert(ns.skinb, QuestTimerFrame)
   tinsert(ns.skin, QuestTimerHeader)
 
-  local UpdateSkins = function()
+  UpdateSkins = function()
       for _,  v in pairs(ns.skin) do
           if  v and v:GetObjectType() == 'Texture' and v:GetVertexColor() then
               v:SetVertexColor(
@@ -596,6 +642,7 @@
     local OnEvent = function(self, event, addon)
         if  event == 'ADDON_LOADED' then
             ADDON_LOADED(self, event, addon)
+            UpdateSkins()
         end
 		if event == 'PLAYER_ENTERING_WORLD' then
 			if  not MODUI_VAR['theme'] then

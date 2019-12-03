@@ -85,8 +85,10 @@
 		end
 		local x, y  = GetCursorPosition()
 		local scale = tooltip:GetEffectiveScale()
-		tooltip:ClearAllPoints()
-		tooltip:SetPoint('TOPLEFT', UIParent, 'BOTTOMLEFT', (x/scale + 25), (y/scale + -5))
+		if tostring(tooltip:GetAnchorType()) == 'ANCHOR_NONE' then
+            tooltip:ClearAllPoints()
+            tooltip:SetPoint('TOPLEFT', UIParent, 'BOTTOMLEFT', (x/scale + 25), (y/scale + -5))
+        end
 	end
 
     local AddAnchor = function(tooltip, parent)

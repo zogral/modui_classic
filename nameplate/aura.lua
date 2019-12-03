@@ -21,7 +21,7 @@
                     plate.aura[i].bo[j]:SetVertexColor(MODUI_VAR['theme_bu'].r, MODUI_VAR['theme_bu'].g, MODUI_VAR['theme_bu'].b)
                 end
                 --ns.BD(plate.aura[i])
-                plate.aura[i]:SetSize(16, 9)
+                plate.aura[i]:SetSize(25, 15)
                 plate.aura[i]:SetPoint('BOTTOMLEFT', i == 1 and plate or plate.aura[i - 1], i == 1 and 'TOPLEFT' or 'BOTTOMRIGHT', i == 1 and 2 or 8, i == 1 and 2 or 0)
                 plate.aura[i]:Hide()
 
@@ -40,7 +40,7 @@
                 plate.aura[i].cooldown:SetReverse(true)
 
                 local t = plate.aura[i].cooldown:GetRegions()
-                t:SetFont(STANDARD_TEXT_FONT, 8, 'OUTLINE')
+                t:SetFont(STANDARD_TEXT_FONT, 12, 'OUTLINE')
                 t:ClearAllPoints()
                 t:SetPoint('CENTER', plate.aura[i].cooldown, 'TOP')
             end
