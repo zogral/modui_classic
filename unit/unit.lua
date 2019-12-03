@@ -156,11 +156,26 @@
         TargetFrameHealthBarTextRight:SetPoint('RIGHT', -110, 3)
         TargetFrameHealthBar.RightText = TargetFrameHealthBarTextRight
 
+        TargetFrameManaBarText = TargetFrameTextureFrame:CreateFontString(nil, 'OVERLAY', 'TextStatusBarText')
+        TargetFrameManaBarText:SetPoint('CENTER', -50, -9)
+        TargetFrameManaBar.TextString = TargetFrameManaBarText
+
+        TargetFrameManaBarTextLeft = TargetFrameTextureFrame:CreateFontString(nil, 'OVERLAY', 'TextStatusBarText')
+        TargetFrameManaBarTextLeft:SetPoint('LEFT', 8, -9)
+        TargetFrameManaBar.LeftText = TargetFrameManaBarLeft
+
+        TargetFrameManaBarTextRight = TargetFrameTextureFrame:CreateFontString(nil, 'OVERLAY', 'TextStatusBarText')
+        TargetFrameManaBarTextRight:SetPoint('RIGHT', -110, -9)
+        TargetFrameManaBar.RightText = TargetFrameManaBarRight
+
         for _, v in pairs(
             {
                 TargetFrameHealthBarText,
                 TargetFrameHealthBarTextLeft,
                 TargetFrameHealthBarTextRight,
+                TargetFrameManaBarText,
+                TargetFrameManaBarTextLeft,
+                TargetFrameManaBarTextRight,
             }
         ) do
             v:SetFont(STANDARD_TEXT_FONT, 10, 'OUTLINE')
