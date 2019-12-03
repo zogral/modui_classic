@@ -386,9 +386,9 @@
 
          self.borderTexture:SetTexture[[Interface\TargetingFrame\UI-TargetingFrame]]
 
-         if  classification == 'worldboss' or classification == 'elite' or classification == 'rareelite' then
+         if  classification == 'worldboss' or classification == 'elite' then
              self.Elite:Show()
-         elseif classification == 'rare' then
+         elseif classification == 'rare' or classification == 'rareelite' then
              self.Rare:Show()
          end
     end
