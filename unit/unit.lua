@@ -49,6 +49,7 @@
         PlayerPVPIcon:SetSize(48, 48)
         PlayerPVPIcon:ClearAllPoints()
         PlayerPVPIcon:SetPoint('CENTER', PlayerFrame, 'LEFT', 60, 16)
+        PlayerPVPIcon:SetAlpha(0)
 
         if  MODUI_VAR['elements']['unit'].castbar then
             CastingBarFrame.Icon:SetSize(16, 16)
@@ -184,6 +185,7 @@
         TargetFrameTextureFramePVPIcon:SetSize(48, 48)
         TargetFrameTextureFramePVPIcon:ClearAllPoints()
         TargetFrameTextureFramePVPIcon:SetPoint('CENTER', TargetFrame, 'RIGHT', -42, 16)
+        TargetFrameTextureFramePVPIcon:SetAlpha(0)
     end
 
     local AddToTFrame = function()
