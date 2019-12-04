@@ -26,7 +26,7 @@
                 PlayerFrameManaBarTextRight,
             }
         ) do
-            v:SetFont(STANDARD_TEXT_FONT, 10, 'OUTLINE')
+            v:SetFont(STANDARD_TEXT_FONT, 13, 'OUTLINE')
         end
         for _, v in pairs(
             {
@@ -37,13 +37,13 @@
             --ns.SB(v)
         end
         if  not PlayerFrame.bg then
-            local _, class  = UnitClass'player'
-            local colour    = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[class]
-            PlayerFrame.bg = PlayerFrame:CreateTexture()
-            PlayerFrame.bg:SetPoint('TOPLEFT', PlayerFrameBackground)
-            PlayerFrame.bg:SetPoint('BOTTOMRIGHT', PlayerFrameBackground, 0, 22)
-            PlayerFrame.bg:SetTexture[[Interface/AddOns/modui_classic/art/statusbar/namebg.tga]]
-            PlayerFrame.bg:SetVertexColor(colour.r, colour.g, colour.b)
+            -- local _, class  = UnitClass'player'
+            -- local colour    = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[class]
+            -- PlayerFrame.bg = PlayerFrame:CreateTexture()
+            -- PlayerFrame.bg:SetPoint('TOPLEFT', PlayerFrameBackground)
+            -- PlayerFrame.bg:SetPoint('BOTTOMRIGHT', PlayerFrameBackground, 0, 22)
+            -- PlayerFrame.bg:SetTexture[[Interface/AddOns/modui_classic/art/statusbar/namebg.tga]]
+            -- PlayerFrame.bg:SetVertexColor(colour.r, colour.g, colour.b)
         end
 
         PlayerPVPIcon:SetSize(48, 48)
@@ -179,7 +179,7 @@
                 TargetFrameManaBarTextRight,
             }
         ) do
-            v:SetFont(STANDARD_TEXT_FONT, 10, 'OUTLINE')
+             v:SetFont(STANDARD_TEXT_FONT, 13, 'OUTLINE')
         end
 
         TargetFrameTextureFramePVPIcon:SetSize(48, 48)
@@ -475,12 +475,51 @@
         end 
     end)
 
-    hooksecurefunc("TextStatusBar_UpdateTextStringWithValues", function()
-        PlayerFrameHealthBar.TextString:SetText(AbbreviateLargeNumbers(UnitHealth("player")))
-        PlayerFrameManaBar.TextString:SetText(AbbreviateLargeNumbers(UnitPower("player")))
-    
-        TargetFrameHealthBar.TextString:SetText(AbbreviateLargeNumbers(UnitHealth("target")))
-        TargetFrameManaBar.TextString:SetText(AbbreviateLargeNumbers(UnitPower("target")))
+    hooksecurefunc("TextStatusBar_UpdateTextStringWithValues",function(statusFrame, _, value, valueMin, valueMax)
+        if statusFrame==PlayerFrameHealthBar then
+            -- do stuff to the player's health statusbar
+            PlayerFrameHealthBar.TextString:SetText(AbbreviateLargeNumbers(UnitHealth("player")))
+        elseif statusFrame==PlayerFrameManaBar then 
+            --  do stuff to the player's mana statusbar
+            PlayerFrameManaBar.TextString:SetText(AbbreviateLargeNumbers(UnitPower("player")))
+        elseif statusFrame==TargetFrameHealthBar then
+            -- do stuff to the target frame's health statusbar
+            local unit = statusFrame:GetParent().unit
+            if unit and UnitIsDead(unit) then return end
+
+
+            local UnitHealth = UnitHealth
+            local realUnitHealth = UnitHealth
+            local UnitHealthMax = UnitHealthMax
+            local realUnitHealthMax = UnitHealthMax
+
+            if RealMobHealth and RealMobHealth.GetUnitHealth then
+                UnitHealth = function(unit)
+                    local hp = RealMobHealth.GetUnitHealth(unit, true)
+                    return hp or realUnitHealth(unit)
+                end
+                UnitHealthMax = function(unit)
+                    local _,maxhp = RealMobHealth.GetUnitHealth(unit, true)
+                    return maxhp or realUnitHealthMax(unit)
+                end
+            elseif RealMobHealth then -- maintain compatibility for now
+                UnitHealth = function(unit)
+                    local hp = RealMobHealth.GetHealth(unit, true)
+                    return hp or realUnitHealth(unit)
+                end
+                UnitHealthMax = function(unit)
+                    local _,maxhp = RealMobHealth.GetHealth(unit, true)
+                    return maxhp or realUnitHealthMax(unit)
+                end
+            end
+
+            TargetFrameHealthBar.TextString:SetText(AbbreviateLargeNumbers(UnitHealth("target")))
+        elseif statusFrame==TargetFrameManaBar then
+            -- do stuff to the target frame's mana statusbar
+            TargetFrameManaBar.TextString:SetText(AbbreviateLargeNumbers(UnitPower("target")))
+        else
+            -- etc
+        end 
     end)
 
     --
