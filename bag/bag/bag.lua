@@ -123,8 +123,6 @@
 		money:SetFrameStrata'MEDIUM'
 		money:SetFrameLevel(3)
 
-		--[[
-		-- https://us.forums.blizzard.com/en/wow/t/key-ring-in-classic/253354/19
 		KeyRingButton:SetSize(39, 18)
         KeyRingButton:SetParent(bag)
         KeyRingButton:ClearAllPoints()
@@ -133,7 +131,6 @@
         KeyRingButton:GetNormalTexture():SetTexCoord(.61,0,0,0,.61,.59,0,.59)
         KeyRingButton:GetPushedTexture():SetTexCoord(.61,0,0,0,.61,.59,0,.59)
         KeyRingButton:SetHighlightTexture''
-		]]
 
 		for _, v in pairs(
 			{

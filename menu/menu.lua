@@ -187,9 +187,9 @@
            tinsert(ns.skinmenu, menu.bo)
        end
 
-       --[[KeyRingButton:SetParent(ContainerFrame1)
+       KeyRingButton:SetParent(ContainerFrame1)
        KeyRingButton:ClearAllPoints()
-       KeyRingButton:SetPoint('TOPLEFT', ContainerFrame1, -25, -2)]]
+       KeyRingButton:SetPoint('TOPLEFT', ContainerFrame1, -25, -2)
 
        menu:SetScript('OnEnter', function()
            ShowMicroButtons()
