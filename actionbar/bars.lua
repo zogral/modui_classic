@@ -33,7 +33,7 @@
             MultiBarBottomLeft:SetPoint('BOTTOMLEFT', ActionButton1, 'TOPLEFT', 0, 23)
 
             MultiBarBottomLeftButton1:ClearAllPoints()
-            MultiBarBottomLeftButton1:SetPoint('BOTTOMLEFT', ActionButton1, 'TOPLEFT', 0, ReputationWatchBar:IsShown() and 30 or 23)
+            MultiBarBottomLeftButton1:SetPoint('BOTTOMLEFT', ActionButton1, 'TOPLEFT', 0, ReputationWatchBar:IsShown() and 30 or 19)
 
             MultiBarBottomRight:SetPoint('LEFT', MultiBarBottomLeft, 'RIGHT', 43, 6)
 
@@ -41,13 +41,13 @@
     		SlidingActionBarTexture0:SetPoint('TOPLEFT', PetActionButton1, -34, 12)
 
             MultiBarBottomRightButton7:ClearAllPoints()
-            MultiBarBottomRightButton7:SetPoint('BOTTOMLEFT', MultiBarBottomRightButton1, 'TOPLEFT', 0, ReputationWatchBar:IsShown() and 31 or 24)
+            MultiBarBottomRightButton7:SetPoint('BOTTOMLEFT', MultiBarBottomRightButton1, 'TOPLEFT', 0, ReputationWatchBar:IsShown() and 31 or 19)
 
             PetActionButton1:ClearAllPoints()
             PetActionButton1:SetPoint('BOTTOMLEFT', MultiBarBottomLeftButton1, 'TOPLEFT', 20, 8)
 
             MainMenuBarVehicleLeaveButton:ClearAllPoints()
-            MainMenuBarVehicleLeaveButton:SetPoint('BOTTOM', MainMenuBarBackpackButton, 'TOP', -5, 30)
+            MainMenuBarVehicleLeaveButton:SetPoint('BOTTOM', MainMenuBarBackpackButton, 'TOP', -60, -26)
     	end
     end
 
