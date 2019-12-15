@@ -14,6 +14,14 @@
         ItemRefTooltip
     }
 
+    local COUNT_TEXT = " |cffAAAAFFx%d|r"
+    local SELL_PRICE_TEXT = format("%s", SELL_PRICE)
+
+    local function GetAmountString(count, isShift)
+        local spacing = count < 10 and "  " or ""
+        return (count > 1 or isShift) and COUNT_TEXT:format(count)..spacing or ""
+    end
+
     local AddPrice = function(tooltip, count, id)
         local _, item
 
@@ -24,10 +32,14 @@
         end
 
         if  item then
-        	local _, _, _, _, _, _, _, _, _, _, price = GetItemInfo(item)
+            local _, _, _, _, _, _, _, _, _, _, price = GetItemInfo(item)
 
-        	if  price and price > 0 then
-        		tooltip:AddDoubleLine(SELL_PRICE..': ', GetCoinText(count and price*count or price), nil, nil, nil, 1, 1, 1)
+            if  price and price > 0 then
+                if IsShiftKeyDown() and count > 1 then
+                    tooltip:AddDoubleLine(SELL_PRICE_TEXT..GetAmountString(count), priceToMoneyString(price * count), nil, nil, nil, 1, 1, 1)
+                else
+                    tooltip:AddDoubleLine(SELL_PRICE_TEXT, priceToMoneyString(price), nil, nil, nil, 1, 1, 1)
+                end
         	end
 
         	if  tooltip:IsShown() then
@@ -234,6 +246,58 @@
                 line:Hide()
             end
         end
+    end
+    
+    function val2gsc (v)
+        local rv = math.floor (v + 0.5)
+    
+        local g = math.floor (rv/10000);
+    
+        rv = rv - g*10000;
+    
+        local s = math.floor (rv/100);
+    
+        rv = rv - s*100;
+    
+        local c = rv;
+    
+        return g, s, c
+    end
+        
+    local goldicon    = "|TInterface\\MoneyFrame\\UI-GoldIcon:12:12:4:0|t"
+    local silvericon  = "|TInterface\\MoneyFrame\\UI-SilverIcon:12:12:4:0|t"
+    local coppericon  = "|TInterface\\MoneyFrame\\UI-CopperIcon:12:12:4:0|t"
+        
+    function priceToMoneyString (val, noZeroCoppers)
+    
+      local gold, silver, copper  = val2gsc(val);
+    
+      local st = "";
+    
+      if (gold ~= 0) then
+    
+        st = gold..goldicon.."  ";
+      end
+    
+    
+      if (st ~= "") then
+        st = st..format("%02i%s  ", silver, silvericon);
+      elseif (silver ~= 0) then
+        st = st..silver..silvericon.."  ";
+      end
+    
+      if (noZeroCoppers and copper == 0) then
+        return st;
+      end
+    
+      if (st ~= "") then
+        st = st..format("%02i%s", copper, coppericon);
+      elseif (copper ~= 0) then
+        st = st..copper..coppericon;
+      end
+    
+      return st;
+    
     end
 
     local OnEvent = function(self, event)

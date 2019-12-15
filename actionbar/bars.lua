@@ -142,14 +142,19 @@
         SlidingActionBarTexture0:ClearAllPoints()
         SlidingActionBarTexture0:SetPoint('BOTTOMLEFT', PetActionButton1, -14, -2)
 
-        PetActionBarFrame:ClearAllPoints()
-        PetActionButton1:ClearAllPoints()
+        -- if InCombatLockdown() then return end
+        if  not InCombatLockdown() then
+            PetActionBarFrame:ClearAllPoints()
+            PetActionButton1:ClearAllPoints()
+        end
         if  MODUI_VAR['elements']['mainbar'].horiz and not MODUI_VAR['elements']['mainbar'].enable then
             PetActionBarFrame:SetPoint('BOTTOMLEFT', MultiBarBottomLeftButton1, 'TOPLEFT', 20, MultiBarRight:IsShown() and 56 or MultiBarBottomLeft:IsShown() and 8 or -40)
             PetActionButton1:SetPoint('BOTTOMLEFT', MultiBarBottomLeftButton1, 'TOPLEFT', 20, MultiBarRight:IsShown() and 56 or MultiBarBottomLeft:IsShown() and 8 or -40)
         else
             PetActionBarFrame:SetPoint('BOTTOMLEFT', MultiBarBottomLeftButton1, 'TOPLEFT', 20, MultiBarBottomLeft:IsShown() and 8 or -40)
-            PetActionButton1:SetPoint('BOTTOMLEFT', MultiBarBottomLeftButton1, 'TOPLEFT', 20, MultiBarBottomLeft:IsShown() and 8 or -40)
+            if  not InCombatLockdown() then
+                PetActionButton1:SetPoint('BOTTOMLEFT', MultiBarBottomLeftButton1, 'TOPLEFT', 20, MultiBarBottomLeft:IsShown() and 8 or -40)
+            end
         end
     end
 
@@ -172,7 +177,9 @@
     end
 
     local UpdateBars = function()
-        SetBarLength(MultiBar2_IsVisible() and true or false)
+        if  not InCombatLockdown() then
+            SetBarLength(MultiBar2_IsVisible() and true or false)
+        end
         UpdateXP()
         UpdateWatchbar()
         UpdatePetStance()
